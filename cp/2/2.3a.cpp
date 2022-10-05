@@ -3,7 +3,7 @@
 
 using namespace std;
 int main() {
-  cout << "Программ демонстрации работы цикла while" << endl;
+  cout << "Программа демонстрации работы цикла while" << endl;
   cout << "----------------------------------------" << endl;
   short int d = 25;
   while (d >= -25) {
