@@ -1,27 +1,29 @@
+#include <cmath>
 #include <cstdlib>
-#include <ctime>
 #include <iostream>
 
 using namespace std;
 
 int main() {
-  cout << "Угадай число!" << endl;
-  cout << "-------------" << endl;
-  int n, rn;
-  srand(time(NULL));
+  cout << "Программа для опрределения простого числа\n";
+  cout << "-----------------------------------------\n";
+  int n;
   do {
-    rn = rand() % 10 + 1;
-
-    do {
-      cout << "Введите натуральное число от 1 до 10 (0 - выход) > ";
-      cin >> n;
-      if (n == rn) {
-        cout << "Ура! Вы угадали!" << endl;
-      } else if (n != 0) {
-        cout << "Упс... Попробуйте еще раз!" << endl;
+    int s = 0, i = 2;
+    cout << "Введите натуральное число (>=2) (0 - выход) > ";
+    cin >> n;
+    while (i <= sqrt(n) && s == 0) {
+      if (n % i == 0) {
+        s++;
       }
-    } while (n != rn && n != 0);
-
+      i++;
+    }
+    if (s == 0) {
+      cout << "Число простое!" << endl;
+    } else {
+      cout << "Число составное!" << endl;
+    }
   } while (n != 0);
+
   return 0;
 }
