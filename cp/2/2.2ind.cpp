@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
   int n, a;
-  int positiveSum = 0, negativeSum = 0;
+  int positiveSum = 0, negativeN = 0;
   cout << "Программа для подсчета сумм отрицательных и положительных элементов "
           "последовательности\n";
   cout << "-------------------------------------------------\n";
@@ -16,13 +16,13 @@ int main() {
     if (a >= 0) {
       positiveSum += a;
     } else {
-      negativeSum += a;
+      negativeN++;
     }
   }
   cout << "-------------------------------------------------\n";
-  cout << "Сумма отрицательных элементов последовательности = " << positiveSum
+  cout << "Сумма положительных элементов последовательности = " << positiveSum
        << endl;
-  cout << "Сумма положительных элементов последовательности = " << negativeSum
+  cout << "Число отрицательных элементов последовательности = " << negativeN
        << endl;
   return 0;
 }
