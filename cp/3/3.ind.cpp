@@ -18,7 +18,8 @@ int main() {
       arr[i][j] = rand() % 2000 - 1000;
       cout << arr[i][j] << " ";
     }
-    cout << endl;}
+    cout << endl;
+  }
   for (int i = 0; i < n; i++) {
     if (arr[i][i] > maxA) {
       maxA = arr[i][i];
@@ -27,7 +28,9 @@ int main() {
     if (arr[n - i - 1][i] > maxA) {
       maxA = arr[n - i - 1][i];
       maxY = i;
-      maxX = n - i - 1;}}
+      maxX = n - i - 1;
+    }
+  }
   swap(arr[maxX][maxY], arr[(n - 1) / 2][(n - 1) / 2]);
   cout << "----------------------" << endl;
   cout << "Отсортированная матрица" << endl;
