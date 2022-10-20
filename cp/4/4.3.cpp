@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstring>
 #include <iostream>
 
 using namespace std;
@@ -22,17 +23,16 @@ int main() {
       "SU1042", "SVO", "OGZ", "A320", 180,
   };
   flights[1] = Airport{
-      "FV6337", "SVO", "ARH", "SSJ100-95", 98,
+      "FV6337", "SVO", "ARH", "SSJ100", 98,
   };
   flights[2] = Airport{
       "SU1200", "SVO", "PEE", "A320", 180,
   };
   flights[3] = Airport{
-      "SU1830", "SVO", "AYT", "A320-200", 170,
+      "SU1830", "SVO", "AYT", "A320", 170,
   };
 
   unsigned short int command = 3;
-  cout << "-----Рейсовый менеджер------" << endl;
   cout << "----------------------------" << endl;
   cout << "-   Доступные команды:     -" << endl;
   cout << "-                          -" << endl;
@@ -42,7 +42,7 @@ int main() {
   cout << "-                          -" << endl;
   cout << "----------------------------" << endl;
   while (command != 0) {
-    cout << endl << ">>> Введите номер команды: ";
+    cout << endl << "Введите номер команды: ";
     cin >> command;
     switch (command) {
       case 0:
@@ -64,23 +64,52 @@ int main() {
         cout << "----------------------------" << endl;
         flightsN++;
         break;
-      case 2:
+      case 2: {
         cout << "-Сортировка по типу самолета-" << endl;
-        char tempAircraftType[SIZE];
-        cin >> tempAircraftType;
+        cout << "Тип самолёта: ";
+        char tmpAircraftType[SIZE];
+        cin >> tmpAircraftType;
+        cout << "----------------------------" << endl;
+        int tmpFlightsN = 1;
+        auto* tmpFlights = (Airport*)malloc((tmpFlightsN) * sizeof(Airport));
         for (int i = 0; i < flightsN; i++) {
-          cout << flights[i].flightNumber << endl;
-          cout << flights[i].departureName << endl;
-          cout << flights[i].arrivalName << endl;
-          cout << flights[i].aircraftType << endl;
-          cout << flights[i].numberOfSeats << endl;
+          if (strcmp(flights[i].aircraftType, tmpAircraftType) == 0) {
+            tmpFlights = (Airport*)realloc(tmpFlights,
+                                           (tmpFlightsN + 1) * sizeof(Airport));
+            tmpFlights[tmpFlightsN - 1] = flights[i];
+            tmpFlightsN++;
+          }
+        }
+        int k;
+        for (int i = 0; i < tmpFlightsN-1; i++) {
+          k = i;
+          for (int j = i; j < tmpFlightsN-1; j++) {
+            if (strcmp(tmpFlights[i].arrivalName, tmpFlights[j].arrivalName) >
+                0) {
+              k = j;
+            }
+          }
+          auto tmp = tmpFlights[i];
+          tmpFlights[i] = tmpFlights[k];
+          tmpFlights[k] = tmp;
+        }
+        for (int i = 0; i < tmpFlightsN-1; i++) {
+          cout << tmpFlights[i].flightNumber << endl;
+          cout << tmpFlights[i].departureName << endl;
+          cout << tmpFlights[i].arrivalName << endl;
+          cout << tmpFlights[i].aircraftType << endl;
+          cout << tmpFlights[i].numberOfSeats << endl;
           cout << "------------------------------" << endl;
         }
+
+        delete[] tmpFlights;
         break;
+      }
       default:
         cout << "Нет такой команды" << endl;
         break;
     }
   }
+  delete[] flights;
   return 0;
 }
