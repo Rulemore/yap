@@ -3,15 +3,12 @@
 using namespace std;
 
 int main() {
+  setlocale(LC_ALL, "Russian");
   char a;
-  int I = 0, t = 0, n;
-  cout << "Введите значение n > ";
-  cin >> n;
+  int I = 0, t = 0, n = 200;
   char mas[n];
-  for (int i = 0; i < n; i++) {
-    cout << "Введите символ s " << i + 1 << " > ";
-    cin >> mas[i];
-  }
+  cout << "Введите строку > ";
+  cin.getline(mas, n, '\n');
   cout << "Введите символ a > ";
   cin >> a;
 
