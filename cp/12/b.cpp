@@ -10,7 +10,10 @@ struct List {
   Node* head;
   Node* tail;
   List() : head(nullptr), tail(nullptr) {}  // конструктор
-  void push_front(int value) {
+  void push_front(int value) {  // добавление элемента в начало списка
+    if (!checkValue(value)) {
+      return;
+    };
     Node* node = new Node;
     node->value = value;
     node->next = head;
@@ -19,7 +22,10 @@ struct List {
       tail = node;
     }
   }
-  void push_back(int value) {
+  void push_back(int value) {  // добавление элемента в конец списка
+    if (!checkValue(value)) {
+      return;
+    };
     Node* node = new Node;
     node->value = value;
     node->next = nullptr;
@@ -31,7 +37,7 @@ struct List {
       head = node;
     }
   }
-  void print() {
+  void print() {  // вывод списка на экран
     Node* node = head;
     while (node != nullptr) {
       cout << node->value << " ";
@@ -39,7 +45,7 @@ struct List {
     }
     cout << endl;
   }
-  void delKey(int key) {
+  void delKey(int key) {  // удаление элемента по значению
     Node* node = head;
     Node* prev = nullptr;
     while (node != nullptr) {
@@ -61,7 +67,7 @@ struct List {
       }
     }
   }
-  void sortByFirstNumber() {
+  void sortByFirstNumber() {  // сортировка по первой цифре
     Node* node = head;
     Node* prev = nullptr;
     while (node != nullptr) {
@@ -93,7 +99,7 @@ struct List {
       node = node->next;
     }
   }
-  void sortByLastNumber() {
+  void sortByLastNumber() {  // сортировка по последней цифре
     Node* node = head;
     Node* prev = nullptr;
     while (node != nullptr) {
@@ -125,7 +131,7 @@ struct List {
       node = node->next;
     }
   }
-  List addList(List L) {
+  List addList(List L) {  // сложение списков
     List L2;
     Node* node = head;
     Node* node2 = L.head;
@@ -136,7 +142,7 @@ struct List {
     }
     return L2;
   }
-  bool isSorted() {
+  bool isSorted() {  // проверка на отсортированность
     Node* node = head;
     while (node != nullptr && node->next != nullptr) {
       if (node->value > node->next->value) {
@@ -146,6 +152,7 @@ struct List {
     }
     return true;
   }
+  bool checkValue(int value) { return (value > 10 && value < 100); }
 };
 
 int main() {
