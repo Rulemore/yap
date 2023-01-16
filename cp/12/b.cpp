@@ -131,14 +131,18 @@ struct List {
       node = node->next;
     }
   }
-  List addList(List L) {  // сложение списков
-    List L2;
+  List addList(List L2) {
     Node* node = head;
-    Node* node2 = L.head;
-    while (node != nullptr && node2 != nullptr) {
-      L2.push_back(node->value + node2->value);
+
+    while (node != nullptr) {
+      L2.push_back(node->value);
       node = node->next;
-      node2 = node2->next;
+    }
+    L2.sortByLastNumber();
+    node = L2.head;
+    while (node != nullptr) {
+      delKey(node->value);
+      node = node->next;
     }
     return L2;
   }
@@ -152,7 +156,7 @@ struct List {
     }
     return true;
   }
-  bool checkValue(int value) { return (value > 10 && value < 100); }
+  bool checkValue(int value) { return (value > 0 && value < 100); }
 };
 
 int main() {
@@ -168,7 +172,7 @@ int main() {
   L1.delKey(2);
   cout << "L1 :";
   L1.print();
-  L2 = L1.addList(L1);
+  L2 = L1.addList(L2);
   cout << "L2 :";
   L2.print();
   cout << "L1 :";
