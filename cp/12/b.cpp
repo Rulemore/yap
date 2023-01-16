@@ -4,38 +4,25 @@ using namespace std;
 struct Node {
   int value;
   Node* next;
-  Node* prev;
 };
 // структура списка
 struct List {
   Node* head;
   Node* tail;
-  List() : head(nullptr), tail(nullptr) {} // конструктор
-  void push_front(int value) {            // добавление элемента в начало
-    if (!checkValue(value)) {
-      return;
-    }
+  List() : head(nullptr), tail(nullptr) {}  // конструктор
+  void push_front(int value) {
     Node* node = new Node;
     node->value = value;
     node->next = head;
-    node->prev = nullptr;
-    if (head != nullptr) {
-      head->prev = node;
-    }
     head = node;
     if (tail == nullptr) {
       tail = node;
     }
   }
-  void push_back(int value) { // добавление элемента в конец
-    if (!checkValue(value)) {
-      return;
-    }
+  void push_back(int value) {
     Node* node = new Node;
     node->value = value;
-
     node->next = nullptr;
-    node->prev = tail;
     if (tail != nullptr) {
       tail->next = node;
     }
@@ -44,7 +31,7 @@ struct List {
       head = node;
     }
   }
-  void print() { // вывод списка
+  void print() {
     Node* node = head;
     while (node != nullptr) {
       cout << node->value << " ";
@@ -52,86 +39,113 @@ struct List {
     }
     cout << endl;
   }
-  void delKey(int key) { // удаление элемента по ключу
+  void delKey(int key) {
     Node* node = head;
+    Node* prev = nullptr;
     while (node != nullptr) {
       if (node->value == key) {
-        if (node->prev != nullptr) {
-          node->prev->next = node->next;
-        } else {
+        if (prev == nullptr) {
           head = node->next;
-        }
-        if (node->next != nullptr) {
-          node->next->prev = node->prev;
         } else {
-          tail = node->prev;
+          prev->next = node->next;
         }
-        Node* tmp = node;
-        node = node->next;
-        delete tmp;
-      } else {
+        if (node == tail) {
+          tail = prev;
+        }
+        delete node;
+        node = prev;
+      }
+      prev = node;
+      if (node != nullptr) {
         node = node->next;
       }
     }
   }
-  bool checkValue(int n) { return ((0 <= n) && (n < 100)); } // проверка на
-                                                            // корректность
-                                                            // введенного числа
-  bool isSorted() { // проверка на упорядоченность
+  void sortByFirstNumber() {
     Node* node = head;
+    Node* prev = nullptr;
     while (node != nullptr) {
-      if (node->next != nullptr && node->value > node->next->value) {
+      Node* node2 = node->next;
+      Node* prev2 = node;
+      while (node2 != nullptr) {
+        if (node->value > node2->value) {
+          if (prev == nullptr) {
+            head = node2;
+          } else {
+            prev->next = node2;
+          }
+          if (prev2 == nullptr) {
+            head = node;
+          } else {
+            prev2->next = node;
+          }
+          Node* tmp = node->next;
+          node->next = node2->next;
+          node2->next = tmp;
+          tmp = node;
+          node = node2;
+          node2 = tmp;
+        }
+        prev2 = node2;
+        node2 = node2->next;
+      }
+      prev = node;
+      node = node->next;
+    }
+  }
+  void sortByLastNumber() {
+    Node* node = head;
+    Node* prev = nullptr;
+    while (node != nullptr) {
+      Node* node2 = node->next;
+      Node* prev2 = node;
+      while (node2 != nullptr) {
+        if (node->value % 10 > node2->value % 10) {
+          if (prev == nullptr) {
+            head = node2;
+          } else {
+            prev->next = node2;
+          }
+          if (prev2 == nullptr) {
+            head = node;
+          } else {
+            prev2->next = node;
+          }
+          Node* tmp = node->next;
+          node->next = node2->next;
+          node2->next = tmp;
+          tmp = node;
+          node = node2;
+          node2 = tmp;
+        }
+        prev2 = node2;
+        node2 = node2->next;
+      }
+      prev = node;
+      node = node->next;
+    }
+  }
+  List addList(List L) {
+    List L2;
+    Node* node = head;
+    Node* node2 = L.head;
+    while (node != nullptr && node2 != nullptr) {
+      L2.push_back(node->value + node2->value);
+      node = node->next;
+      node2 = node2->next;
+    }
+    return L2;
+  }
+  bool isSorted() {
+    Node* node = head;
+    while (node != nullptr && node->next != nullptr) {
+      if (node->value > node->next->value) {
         return false;
       }
       node = node->next;
     }
     return true;
   }
-  void sortByLastNumber() { // сортировка по последней цифре
-    Node* node = head;
-    while (node != nullptr) {
-      Node* node2 = node->next;
-      while (node2 != nullptr) {
-        if (node->value % 10 > node2->value % 10) {
-          int tmp = node->value;
-          node->value = node2->value;
-          node2->value = tmp;
-        }
-        node2 = node2->next;
-      }
-      node = node->next;
-    }
-  }
-  void sortByFirstNumber() { // сортировка по первой цифре
-    Node* node = head;
-    while (node != nullptr) {
-      Node* node2 = node->next;
-      while (node2 != nullptr) {
-        if (node->value / 10 > node2->value / 10) {
-          int tmp = node->value;
-          node->value = node2->value;
-          node2->value = tmp;
-        }
-        node2 = node2->next;
-      }
-      node = node->next;
-    }
-  }
-  List addList(List L1) { // сложение списков
-    List tmp;
-    L1.sortByFirstNumber();
-    Node* node = L1.head;
-    while (node != nullptr) {
-      tmp.push_back(node->value);
-      node = node->next;
-    }
-    node = tmp.head;
-    while (node != nullptr) {
-      delKey(node->value);
-      node = node->next;
-    }
-    return tmp;
-  };
 };
 
 int main() {
